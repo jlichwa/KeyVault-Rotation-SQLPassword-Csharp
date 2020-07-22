@@ -1,35 +1,32 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
-namespace Microsoft.AKVSQLRotationHttp
+
+namespace Microsoft.KeyVault
 {
     public static class AKVSQLRotationHttp
     {
         [FunctionName("AKVSQLRotationHttp")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        public static IActionResult Run(
+			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+			ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            string keyVaultName =  req.Query["KeyVaultName"];
+            string secretName = req.Query["SecretName"];
+            if(string.IsNullOrEmpty(keyVaultName) || string.IsNullOrEmpty(secretName)){
+                return new BadRequestObjectResult("Please pass a KeyVaultName and SecretName on the query string");
+            }
 
-            string name = req.Query["name"];
+            log.LogInformation(req.ToString());
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            log.LogInformation("C# Http trigger function processed a request.");
+            SecretRotator.RotateSecret(log,secretName ,keyVaultName);
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult($"Secret Rotated Successfully");
         }
     }
 }
