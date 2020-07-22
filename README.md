@@ -1,1 +1,1 @@
-# KeyVault-Rotation-SQLPassword-PowerShell
+# KeyVault-Rotation-SQLPassword-Csharp
