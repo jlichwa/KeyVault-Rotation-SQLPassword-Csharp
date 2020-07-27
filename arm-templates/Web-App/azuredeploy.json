@@ -22,7 +22,14 @@
             "metadata": {
                 "description": "SQL server name with password to rotate."
             }
+     },
+     "repoURL": {
+      "defaultValue": "https://github.com/jlichwa/KeyVault-Rotation-SQLPassword-Csharp-Webapp.git",
+      "type": "String",
+      "metadata": {
+            "description": "The URL for the GitHub repository that contains the project to deploy."
      }
+   }
   },
   "variables":{},
   "resources":[
@@ -81,7 +88,22 @@
            "siteConfig":{  
               "appSettings":[{}]
            }
-        }
+        },
+        "resources": [
+                {
+                    "type": "sourcecontrols",
+                    "apiVersion": "2018-11-01",
+                    "name": "web",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', concat(parameters('ResourceNamePrefix'),'-app'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[parameters('repoURL')]",
+                        "branch": "master",
+                        "IsManualIntegration": true
+                    }
+                }
+            ]
      },
      {
             "type": "Microsoft.Sql/servers/providers/roleAssignments",
