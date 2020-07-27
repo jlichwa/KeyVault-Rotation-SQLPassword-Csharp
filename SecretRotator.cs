@@ -30,7 +30,7 @@ namespace Microsoft.KeyVault
             log.LogInformation($"Provider Address: {providerAddress}");
             log.LogInformation($"Credential Id: {credentialId}");
 
-            //Check SQL connection
+            //Check Service Provider connection
             CheckServiceConnection(secret);
             log.LogInformation("Service  Connection Validated");
             
@@ -42,7 +42,7 @@ namespace Microsoft.KeyVault
             CreateNewSecretVersion(client, secret, randomPassword);
             log.LogInformation("New Secret Version Generated");
 
-            //Update SQL Server with new password
+            //Update Service Provider with new password
             UpdateServicePassword(secret, randomPassword);
             log.LogInformation("Password Changed");
             log.LogInformation($"Secret Rotated Successfully");
