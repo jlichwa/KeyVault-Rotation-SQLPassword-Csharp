@@ -1,11 +1,11 @@
-# Storage Account Key Rotation Templates
+# SQL Password Rotation Templates
 
-This template creates below components to help demonstrate Azure Storage Account key rotation in Key Vault using Function and Event Grid notification.
+This template creates below components to help demonstrate Azure SQL password rotation in Key Vault using Function and Event Grid notification.
 
 ### Inital Setup:
 
 - Key Vault
-- 2 Storage Accounts
+- Azure SQL Server
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjlichwa%2FKeyVault-Rotation-StorageAccountKey-PowerShell%2Fmaster%2Farm-templates%2FInitial-Setup%2Fazuredeploy.json" target="_blank">
     <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png"/>
@@ -14,12 +14,12 @@ This template creates below components to help demonstrate Azure Storage Account
     <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png"/>
 </a>
 
-### Storage Account Key Rotation Functions:
+### Azure SQL Password Rotation Functions:
 
 - App Service Plan
-- Storage Account
-- Function App with access to Key Vault and Azure Storage
-- Deploy functions to rotate storage account key
+- Azure SQL Server
+- Function App with access to Key Vault and Azure SQL
+- Deploy functions to rotate SQL password
 - Event Subscription
 
 
