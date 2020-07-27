@@ -3,7 +3,6 @@ using Microsoft.Data.SqlClient;
 using System;
 using Microsoft.Extensions.Logging;
 using Azure.Identity;
-using Azure.Core;
 using System.Security.Cryptography;
 
 
