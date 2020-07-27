@@ -172,18 +172,6 @@
             }
 	},
     {
-            "type": "Microsoft.Sql/servers/providers/roleAssignments",
-            "apiVersion": "2018-09-01-preview",
-            "name": "[concat(parameters('sqlServerName'), '/Microsoft.Authorization/', guid(uniqueString(parameters('sqlServerName'))))]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('functionAppName'))]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '6d8ee4ec-f05a-4a1d-8b00-a9b17e38b437')]",
-                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('functionAppName')),'2019-08-01', 'Full').identity.principalId]"
-            }
-	},
-    {
             "type": "Microsoft.KeyVault/vaults/providers/eventSubscriptions",
             "apiVersion": "2020-01-01-preview",
             "name": "[concat(parameters('keyVaultName'),'/Microsoft.EventGrid/',variables('eventSubscriptionName'))]",

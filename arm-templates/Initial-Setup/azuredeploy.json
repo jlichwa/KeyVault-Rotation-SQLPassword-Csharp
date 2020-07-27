@@ -13,7 +13,7 @@
 		  "defaultValue":"sqlAdmin",
 		  "type":"string",
 		  "metadata":{  
-			 "description":"Sql administrator login"
+			 "description":"SQL administrator login"
 	   	  }
 	   }
 	},
