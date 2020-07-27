@@ -68,17 +68,19 @@ namespace Microsoft.KeyVault
         {
             var userId = secret.Properties.Tags.ContainsKey(CredentialIdTag) ? secret.Properties.Tags[CredentialIdTag] : "";
             var datasource = secret.Properties.Tags.ContainsKey(ProviderAddressTag) ? secret.Properties.Tags[ProviderAddressTag] : "";
-
+            var dbResourceId = secret.Properties.Tags.ContainsKey(ProviderAddressTag) ? secret.Properties.Tags[ProviderAddressTag] : "";
+            
+            var dbName = dbResourceId.Split('/')[8];
             var password = secret.Value;
+            
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = datasource;
+            builder.DataSource = $"{dbName}.database.windows.net";
+            builder.UserID = userId;
+            builder.Password = password;
     
             //Update password
             using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
             {
-                var credential = new DefaultAzureCredential();
-                var tokenResult = credential.GetToken(new TokenRequestContext(new[] { "https://database.windows.net/.default" }));  
-                connection.AccessToken = tokenResult.Token;
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand($"ALTER LOGIN {userId} WITH Password='{newpassword}';", connection))
@@ -100,11 +102,12 @@ namespace Microsoft.KeyVault
          private static void CheckServiceConnection(KeyVaultSecret secret)
         {
             var userId = secret.Properties.Tags.ContainsKey(CredentialIdTag) ? secret.Properties.Tags[CredentialIdTag] : "";
-            var datasource = secret.Properties.Tags.ContainsKey(ProviderAddressTag) ? secret.Properties.Tags[ProviderAddressTag] : "";
-
+            var dbResourceId = secret.Properties.Tags.ContainsKey(ProviderAddressTag) ? secret.Properties.Tags[ProviderAddressTag] : "";
+            
+            var dbName = dbResourceId.Split('/')[8];
             var password = secret.Value;
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = datasource;
+            builder.DataSource = $"{dbName}.database.windows.net";
             builder.UserID = userId;
             builder.Password = password;
             using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
